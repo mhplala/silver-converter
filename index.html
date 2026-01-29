@@ -496,8 +496,51 @@
 
   <script>
     let silverPricePerGram = 3.84; // USD
-    const exchangeRate = 7.25; // CNY per USD
+    let exchangeRate = 7.25; // CNY per USD
     let selectedTaelGrams = 50;
+    
+    // Fetch real-time silver price
+    async function fetchSilverPrice() {
+      const priceEl = document.getElementById('silverPrice');
+      const changeEl = document.getElementById('priceChange');
+      
+      try {
+        // Using metals-api proxy or fallback
+        const res = await fetch('https://api.metalpriceapi.com/v1/latest?api_key=demo&base=USD&currencies=XAG');
+        const data = await res.json();
+        
+        if (data.rates && data.rates.XAG) {
+          // XAG is silver, rate is USD per troy oz
+          const pricePerOz = 1 / data.rates.XAG;
+          silverPricePerGram = pricePerOz / 31.1035;
+          const priceCNY = silverPricePerGram * exchangeRate;
+          
+          priceEl.innerHTML = `¥${priceCNY.toFixed(2)}<small>/克</small>`;
+          changeEl.textContent = `≈ $${silverPricePerGram.toFixed(2)}/g`;
+          calculate();
+          return;
+        }
+      } catch (e) {
+        console.log('API failed, trying backup...');
+      }
+      
+      // Backup: use JuHe or show static with note
+      try {
+        const res2 = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const data2 = await res2.json();
+        if (data2.rates && data2.rates.CNY) {
+          exchangeRate = data2.rates.CNY;
+        }
+      } catch (e) {}
+      
+      // Keep static price but update display
+      const priceCNY = silverPricePerGram * exchangeRate;
+      priceEl.innerHTML = `¥${priceCNY.toFixed(2)}<small>/克</small>`;
+      changeEl.textContent = `参考价`;
+    }
+    
+    // Init
+    fetchSilverPrice();
     
     function selectTael(el) {
       document.querySelectorAll('.tael-option').forEach(btn => btn.classList.remove('active'));
