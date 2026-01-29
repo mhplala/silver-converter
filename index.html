@@ -3,376 +3,565 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>月薪换银子 💰</title>
+  <title>月俸换银 · 白银兑换器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --ink: #1a1612;
+      --paper: #f5f0e6;
+      --paper-dark: #e8e0d0;
+      --silver: #a8a9ad;
+      --silver-light: #d4d5d9;
+      --silver-dark: #6b6c70;
+      --gold: #c9a227;
+      --vermillion: #c73e3a;
+      --jade: #5b8c5a;
+    }
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     
+    html {
+      font-size: 16px;
+    }
+    
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: 'Noto Serif SC', serif;
+      background: var(--paper);
       min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Paper texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    
+    .seal {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 4rem;
+      height: 4rem;
+      border: 3px solid var(--vermillion);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Ma Shan Zheng', cursive;
+      color: var(--vermillion);
+      font-size: 1.5rem;
+      transform: rotate(12deg);
+      opacity: 0.8;
+      letter-spacing: -2px;
+      line-height: 1;
     }
     
     .container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      padding: 40px;
-      max-width: 500px;
+      max-width: 28rem;
       width: 100%;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
     }
     
+    /* Header */
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 2.5rem;
+      position: relative;
     }
     
-    .header h1 {
-      color: #C0C0C0;
-      font-size: 2.5em;
-      text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
-      margin-bottom: 10px;
-    }
-    
-    .header .subtitle {
-      color: #888;
-      font-size: 0.9em;
-    }
-    
-    .silver-icon {
-      font-size: 4em;
-      margin-bottom: 15px;
-      animation: shine 2s ease-in-out infinite;
-    }
-    
-    @keyframes shine {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.3); }
-    }
-    
-    .price-display {
-      background: rgba(192, 192, 192, 0.1);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 25px;
-      text-align: center;
-    }
-    
-    .price-display .label {
-      color: #888;
-      font-size: 0.85em;
-      margin-bottom: 5px;
-    }
-    
-    .price-display .price {
-      color: #C0C0C0;
-      font-size: 1.8em;
-      font-weight: bold;
-    }
-    
-    .price-display .change {
-      font-size: 0.9em;
-      margin-top: 5px;
-    }
-    
-    .change.up { color: #4ade80; }
-    .change.down { color: #f87171; }
-    
-    .input-group {
-      margin-bottom: 20px;
-    }
-    
-    .input-group label {
+    .header::after {
+      content: '';
       display: block;
-      color: #aaa;
-      margin-bottom: 8px;
-      font-size: 0.9em;
+      width: 8rem;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ink), transparent);
+      margin: 1.5rem auto 0;
+      opacity: 0.3;
+    }
+    
+    .title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 3.5rem;
+      color: var(--ink);
+      letter-spacing: 0.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0 var(--paper-dark);
+    }
+    
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--silver-dark);
+      letter-spacing: 0.3rem;
+    }
+    
+    /* Silver price card */
+    .price-card {
+      background: linear-gradient(135deg, var(--silver-light) 0%, var(--silver) 50%, var(--silver-dark) 100%);
+      border-radius: 2px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 4px 12px rgba(0,0,0,0.15),
+        0 1px 3px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .price-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { transform: translateX(-50%); }
+      50% { transform: translateX(50%); }
+    }
+    
+    .price-label {
+      font-size: 0.75rem;
+      color: var(--ink);
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+    }
+    
+    .price-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    
+    .price-change {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      background: rgba(0,0,0,0.1);
+    }
+    
+    .price-change.up { color: var(--jade); }
+    .price-change.down { color: var(--vermillion); }
+    
+    /* Input section */
+    .input-section {
+      margin-bottom: 2rem;
+    }
+    
+    .input-label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05rem;
     }
     
     .input-wrapper {
       position: relative;
       display: flex;
-      align-items: center;
+      align-items: stretch;
+      background: #fff;
+      border: 2px solid var(--ink);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
     }
     
-    .input-wrapper .prefix {
-      position: absolute;
-      left: 15px;
-      color: #888;
-      font-size: 1.1em;
+    .input-wrapper:focus-within {
+      box-shadow: 4px 4px 0 var(--ink);
     }
     
-    .input-wrapper input {
-      width: 100%;
-      padding: 15px 15px 15px 45px;
-      font-size: 1.2em;
-      border: 2px solid rgba(192, 192, 192, 0.2);
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.3);
-      color: #fff;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    
-    .input-wrapper input:focus {
-      border-color: #C0C0C0;
-    }
-    
-    .input-wrapper input::placeholder {
-      color: #555;
-    }
-    
-    .result-card {
-      background: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%);
-      border-radius: 16px;
-      padding: 25px;
-      text-align: center;
-      margin-top: 25px;
-      border: 2px solid #C0C0C0;
-      box-shadow: 0 0 30px rgba(192, 192, 192, 0.2);
-    }
-    
-    .result-card .taels {
-      font-size: 3.5em;
-      font-weight: bold;
-      color: #C0C0C0;
-      text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
-      line-height: 1.2;
-    }
-    
-    .result-card .unit {
-      font-size: 1.5em;
-      color: #888;
-      margin-top: 5px;
-    }
-    
-    .result-card .context {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: #888;
-      font-size: 0.9em;
-      line-height: 1.6;
-    }
-    
-    .fun-facts {
-      margin-top: 25px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 12px;
-      font-size: 0.85em;
-      color: #666;
-    }
-    
-    .fun-facts h3 {
-      color: #888;
-      font-size: 0.9em;
-      margin-bottom: 10px;
-    }
-    
-    .fun-facts ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    
-    .fun-facts li {
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .fun-facts li:last-child {
-      border-bottom: none;
-    }
-    
-    .settings {
+    .input-prefix {
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+      align-items: center;
+      padding: 0 1rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 1.1rem;
+      font-weight: 600;
     }
     
-    .settings select {
+    .salary-input {
       flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(192, 192, 192, 0.2);
-      background: rgba(0, 0, 0, 0.3);
-      color: #fff;
-      font-size: 0.9em;
-      cursor: pointer;
-    }
-    
-    .refresh-btn {
-      background: rgba(192, 192, 192, 0.2);
+      padding: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 1.5rem;
       border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      color: #C0C0C0;
+      outline: none;
+      background: transparent;
+      color: var(--ink);
+      width: 100%;
+    }
+    
+    .salary-input::placeholder {
+      color: #ccc;
+    }
+    
+    /* Tael selector */
+    .tael-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .tael-option {
+      flex: 1;
+      padding: 0.6rem 0.5rem;
+      border: 1px solid var(--silver);
+      background: transparent;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 0.75rem;
+      color: var(--silver-dark);
       cursor: pointer;
-      transition: background 0.3s;
-    }
-    
-    .refresh-btn:hover {
-      background: rgba(192, 192, 192, 0.3);
-    }
-    
-    .loading {
+      transition: all 0.2s;
       text-align: center;
-      color: #888;
-      padding: 20px;
     }
     
-    .error {
-      background: rgba(248, 113, 113, 0.1);
-      border: 1px solid rgba(248, 113, 113, 0.3);
-      color: #f87171;
-      padding: 10px;
-      border-radius: 8px;
+    .tael-option:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+    
+    .tael-option.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--paper);
+    }
+    
+    /* Result */
+    .result {
       text-align: center;
-      margin-bottom: 15px;
+      padding: 2.5rem 1.5rem;
+      background: #fff;
+      border: 3px double var(--ink);
+      position: relative;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s ease;
+    }
+    
+    .result.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .result::before,
+    .result::after {
+      content: '◆';
+      position: absolute;
+      top: -0.6rem;
+      font-size: 0.8rem;
+      color: var(--ink);
+      background: #fff;
+      padding: 0 0.3rem;
+    }
+    
+    .result::before { left: 1rem; }
+    .result::after { right: 1rem; }
+    
+    .result-number {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 5rem;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    
+    .result-unit {
+      font-size: 1.5rem;
+      color: var(--silver-dark);
+      letter-spacing: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .result-context {
+      font-size: 0.95rem;
+      color: var(--ink);
+      padding: 1rem;
+      background: var(--paper);
+      border-left: 3px solid var(--gold);
+      text-align: left;
+      line-height: 1.8;
+    }
+    
+    .result-detail {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--silver-dark);
+      margin-top: 1rem;
+    }
+    
+    /* Reference table */
+    .reference {
+      margin-top: 2.5rem;
+      border-top: 1px solid var(--silver);
+      padding-top: 2rem;
+    }
+    
+    .reference-title {
+      font-size: 0.8rem;
+      color: var(--silver-dark);
+      text-align: center;
+      letter-spacing: 0.2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .reference-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .reference-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--ink);
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.5);
+      border-radius: 2px;
+    }
+    
+    .reference-item .emoji {
+      font-size: 1rem;
+    }
+    
+    .reference-item .value {
+      font-family: 'DM Mono', monospace;
+      color: var(--silver-dark);
+      margin-left: auto;
+      font-size: 0.7rem;
+    }
+    
+    /* Footer */
+    .footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--silver);
+    }
+    
+    .footer a {
+      color: var(--silver-dark);
+      text-decoration: none;
+    }
+    
+    /* Mobile */
+    @media (max-width: 480px) {
+      .title {
+        font-size: 2.5rem;
+        letter-spacing: 0.3rem;
+      }
+      
+      .result-number {
+        font-size: 4rem;
+      }
+      
+      .reference-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .seal {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.1rem;
+        top: 1rem;
+        right: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="seal">银两</div>
+  
   <div class="container">
-    <div class="header">
-      <div class="silver-icon">🥈</div>
-      <h1>月薪换银子</h1>
-      <p class="subtitle">看看你的月薪在古代值多少两白银</p>
+    <header class="header">
+      <h1 class="title">月俸换银</h1>
+      <p class="subtitle">看看你在古代值几两</p>
+    </header>
+    
+    <div class="price-card">
+      <div>
+        <div class="price-label">实时银价</div>
+        <div class="price-value" id="silverPrice">$119.31<small>/oz</small></div>
+      </div>
+      <div class="price-change up" id="priceChange">+2.36%</div>
     </div>
     
-    <div class="price-display">
-      <div class="label">实时国际银价</div>
-      <div class="price" id="silverPrice">加载中...</div>
-      <div class="change" id="priceChange"></div>
-    </div>
-    
-    <div class="settings">
-      <select id="taelType">
-        <option value="50">市两 (50g)</option>
-        <option value="37.429">港两 (37.4g)</option>
-        <option value="31.1035">金衡两 (31.1g)</option>
-      </select>
-      <button class="refresh-btn" onclick="fetchSilverPrice()">🔄 刷新</button>
-    </div>
-    
-    <div class="input-group">
-      <label>输入你的月薪 (人民币)</label>
+    <div class="input-section">
+      <label class="input-label">输入月薪（人民币）</label>
       <div class="input-wrapper">
-        <span class="prefix">¥</span>
-        <input type="number" id="salary" placeholder="例如: 20000" oninput="calculate()">
+        <span class="input-prefix">¥</span>
+        <input 
+          type="number" 
+          class="salary-input" 
+          id="salaryInput" 
+          placeholder="20000"
+          oninput="calculate()"
+        >
+      </div>
+      
+      <div class="tael-selector">
+        <button class="tael-option active" data-grams="50" onclick="selectTael(this)">
+          市两<br><small>50g</small>
+        </button>
+        <button class="tael-option" data-grams="37.429" onclick="selectTael(this)">
+          港两<br><small>37.4g</small>
+        </button>
+        <button class="tael-option" data-grams="31.1035" onclick="selectTael(this)">
+          金衡两<br><small>31.1g</small>
+        </button>
       </div>
     </div>
     
-    <div class="result-card" id="resultCard" style="display: none;">
-      <div class="taels" id="taelsResult">0</div>
-      <div class="unit">两白银</div>
-      <div class="context" id="context"></div>
+    <div class="result" id="result">
+      <div class="result-number" id="resultNumber">0</div>
+      <div class="result-unit">两 白 银</div>
+      <div class="result-context" id="resultContext">
+        输入月薪开始计算
+      </div>
+      <div class="result-detail" id="resultDetail"></div>
     </div>
     
-    <div class="fun-facts">
-      <h3>📜 古代购买力参考</h3>
-      <ul>
-        <li>🍚 1两银子 ≈ 1石米 (约150斤)</li>
-        <li>🏠 清朝一间普通房子 ≈ 50-100两</li>
-        <li>👔 县令年俸 ≈ 45两</li>
-        <li>👷 普通工人月薪 ≈ 1-2两</li>
-        <li>🥢 一顿饭 ≈ 20-50文 (0.02-0.05两)</li>
-      </ul>
+    <div class="reference">
+      <div class="reference-title">— 古代购买力参考 —</div>
+      <div class="reference-grid">
+        <div class="reference-item">
+          <span class="emoji">🍚</span>
+          <span>一石米</span>
+          <span class="value">≈ 1两</span>
+        </div>
+        <div class="reference-item">
+          <span class="emoji">🏠</span>
+          <span>普通房屋</span>
+          <span class="value">50-100两</span>
+        </div>
+        <div class="reference-item">
+          <span class="emoji">👔</span>
+          <span>县令年俸</span>
+          <span class="value">≈ 45两</span>
+        </div>
+        <div class="reference-item">
+          <span class="emoji">👷</span>
+          <span>工人月薪</span>
+          <span class="value">1-2两</span>
+        </div>
+        <div class="reference-item">
+          <span class="emoji">🥢</span>
+          <span>一顿饭</span>
+          <span class="value">20-50文</span>
+        </div>
+        <div class="reference-item">
+          <span class="emoji">📚</span>
+          <span>一本书</span>
+          <span class="value">0.1-0.5两</span>
+        </div>
+      </div>
     </div>
+    
+    <footer class="footer">
+      银价数据来自 Kitco · 汇率 ¥7.25/$
+    </footer>
   </div>
 
   <script>
-    let silverPricePerGram = 0; // USD
-    let exchangeRate = 7.25; // CNY per USD
+    let silverPricePerGram = 3.84; // USD
+    const exchangeRate = 7.25; // CNY per USD
+    let selectedTaelGrams = 50;
     
-    async function fetchSilverPrice() {
-      const priceEl = document.getElementById('silverPrice');
-      const changeEl = document.getElementById('priceChange');
-      
-      priceEl.textContent = '加载中...';
-      changeEl.textContent = '';
-      
-      try {
-        // Using a CORS proxy or fallback to static price
-        // In production, you'd use a proper API
-        const response = await fetch('https://api.metals.dev/v1/latest?api_key=demo&currency=USD&unit=g');
-        const data = await response.json();
-        
-        if (data.metals && data.metals.silver) {
-          silverPricePerGram = data.metals.silver;
-          const pricePerOunce = silverPricePerGram * 31.1035;
-          priceEl.textContent = `$${pricePerOunce.toFixed(2)}/盎司`;
-          changeEl.innerHTML = `<span>≈ ¥${(silverPricePerGram * exchangeRate).toFixed(2)}/克</span>`;
-          changeEl.className = 'change';
-        } else {
-          throw new Error('No data');
-        }
-      } catch (e) {
-        // Fallback to approximate current price
-        silverPricePerGram = 3.84; // USD per gram (from Kitco)
-        priceEl.textContent = `$119.31/盎司`;
-        changeEl.innerHTML = `<span class="up">+2.36%</span> ≈ ¥${(silverPricePerGram * exchangeRate).toFixed(2)}/克`;
-        changeEl.className = 'change';
-      }
-      
+    function selectTael(el) {
+      document.querySelectorAll('.tael-option').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+      selectedTaelGrams = parseFloat(el.dataset.grams);
       calculate();
     }
     
     function calculate() {
-      const salary = parseFloat(document.getElementById('salary').value) || 0;
-      const taelGrams = parseFloat(document.getElementById('taelType').value);
-      const resultCard = document.getElementById('resultCard');
-      const taelsResult = document.getElementById('taelsResult');
-      const contextEl = document.getElementById('context');
+      const salary = parseFloat(document.getElementById('salaryInput').value) || 0;
+      const result = document.getElementById('result');
+      const resultNumber = document.getElementById('resultNumber');
+      const resultContext = document.getElementById('resultContext');
+      const resultDetail = document.getElementById('resultDetail');
       
-      if (salary <= 0 || silverPricePerGram <= 0) {
-        resultCard.style.display = 'none';
+      if (salary <= 0) {
+        result.classList.remove('visible');
         return;
       }
       
-      // Calculate: salary (CNY) -> USD -> grams of silver -> taels
       const salaryUSD = salary / exchangeRate;
       const silverGrams = salaryUSD / silverPricePerGram;
-      const taels = silverGrams / taelGrams;
+      const taels = silverGrams / selectedTaelGrams;
       
-      taelsResult.textContent = taels.toFixed(2);
-      resultCard.style.display = 'block';
+      resultNumber.textContent = taels.toFixed(1);
+      result.classList.add('visible');
       
-      // Fun context
+      // Context based on amount
       let context = '';
+      let icon = '';
+      
       if (taels < 1) {
-        context = '😅 在古代当个小工都不够...';
-      } else if (taels < 3) {
-        context = '👷 相当于古代普通工人月薪';
-      } else if (taels < 10) {
-        context = '🧑‍🏫 相当于古代教书先生水平';
+        icon = '😅';
+        context = '连古代打杂的都不如……建议穿越前三思';
+      } else if (taels < 2) {
+        icon = '👷';
+        context = '相当于古代普通劳工，勉强糊口度日';
+      } else if (taels < 5) {
+        icon = '🧑‍🏫';
+        context = '相当于私塾先生，清贫但受人尊敬';
+      } else if (taels < 15) {
+        icon = '👨‍💼';
+        context = '相当于小商贩或手艺人，生活还算体面';
       } else if (taels < 30) {
-        context = '👨‍💼 相当于古代小商人收入';
+        icon = '🎭';
+        context = '相当于富商或名角，出入皆有排场';
       } else if (taels < 50) {
-        context = '🎖️ 已经超过县令年俸了！';
+        icon = '🎖️';
+        context = '已超县令年俸！可以考虑捐个官当当';
       } else if (taels < 100) {
-        context = '🏠 一个月能买半间房子';
+        icon = '🏛️';
+        context = '地方乡绅级别，置办几处宅院不在话下';
       } else {
-        context = '🤑 土豪！古代大财主级别';
+        icon = '👑';
+        context = '富可敌国！可以考虑包养几个戏班子了';
       }
       
-      context += `<br><br>📊 换算：${silverGrams.toFixed(1)}克白银 = ${taels.toFixed(2)}两`;
-      contextEl.innerHTML = context;
+      resultContext.innerHTML = `${icon} ${context}`;
+      resultDetail.textContent = `${silverGrams.toFixed(1)}g 白银 = ${taels.toFixed(2)} ${selectedTaelGrams === 50 ? '市' : selectedTaelGrams === 37.429 ? '港' : '金衡'}两`;
     }
     
-    // Initialize
-    document.getElementById('taelType').addEventListener('change', calculate);
-    fetchSilverPrice();
+    // Auto-focus
+    document.getElementById('salaryInput').focus();
   </script>
 </body>
 </html>
